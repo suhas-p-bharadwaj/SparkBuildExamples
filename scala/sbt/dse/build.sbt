@@ -3,7 +3,7 @@ name := "writeRead"
 
 version := "0.1"
 
-scalaVersion := "2.11.8"
+scalaVersion := "2.11.11"
 
 resolvers += Resolver.mavenLocal // for testing
 resolvers += "DataStax Repo" at "https://repo.datastax.com/public-repos/"
@@ -16,6 +16,8 @@ val dseVersion = "5.1.4"
 libraryDependencies += (
   "com.datastax.dse" % "dse-spark-dependencies" % dseVersion % "provided"
 )
+
+libraryDependencies += "com.oracle" % "jdbc" % "1.0" from "file:///Users/suhbhara/Documents/CSS/OMF/Git_Repos/ngfcst-data-load/scripts/ojdbc8.jar"
 
 // Test Dependencies
 // The 'test/resources' Directory in should match the resources directory in the `it` directory
