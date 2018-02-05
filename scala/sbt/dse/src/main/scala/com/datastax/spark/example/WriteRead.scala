@@ -19,10 +19,10 @@ object WriteRead extends App {
   
   val connectionProperties = new Properties()
 
-  val sql = s"( select u.login as login, 'defaultTerr' as prefType, NVL(TO_CHAR(t1.derived_segment1),'') as pref_val from fda_users u, fda_territory t1  where u.active_flag = 'Y' and u.default_terr_key = t1.terr_key )"
+  val sql = s"( select u.login as login, 'defaultTerr' as prefType, NVL(TO_CHAR(t1.derived_segment1),'') as pref_val from fda_users u left outer join fda_territory t1  on u.default_terr_key = t1.terr_key  where u.active_flag = 'Y')"
 
-  val jdbcUrl = s"jdbc:oracle:thin:FDATERR/ispfda07@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=dbc-stg-2095-vip.cisco.com)(PORT=1532))(CONNECT_DATA=(SERVICE_NAME=ESALESQA.CISCO.COM)(Server=Dedicated)))"
-
+  //val jdbcUrl = s"jdbc:oracle:thin:FDATERR/ispfda07@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=dbc-stg-2095-vip.cisco.com)(PORT=1532))(CONNECT_DATA=(SERVICE_NAME=ESALESQA.CISCO.COM)(Server=Dedicated)))"
+  val jdbcUrl = s"jdbc:oracle:thin:FDATERR/fdater07@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=scan-prd-2038.cisco.com)(PORT=1541))(CONNECT_DATA=(SERVICE_NAME=ESALESPD.cisco.com)(Server=Dedicated)))"
   val prefTable = spark.read.jdbc(jdbcUrl, sql, connectionProperties)
 
   val mapPref = prefTable.map( row => (row.getString(0), row.getString(1), row.getString(2)) )
